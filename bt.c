@@ -53,7 +53,9 @@ static bool audio_connected = false;
 static bool scanning = false;
 static uint16_t audio_chr_val_handle = 0;  // 音响设备的特性句柄
 static bool audio_svc_found = false;
+#ifndef CONFIG_GMC_BLE_TARGET_NAME_PREFIX
 static bool ble_prefix_missing_logged = false;
+#endif
 
 static gmc_bt_rx_callback_t rx_callback = NULL;
 static gmc_bt_state_callback_t state_callback = NULL;
