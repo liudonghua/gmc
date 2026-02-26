@@ -1,0 +1,202 @@
+[
+    {
+        "mode": "read",
+        "type": "playControl",
+        "cmd": "getInputSourceList"
+    },
+    {
+        "mode": "read",
+        "type": "playControl",
+        "cmd": "getCurrentInputSource"
+    },
+    {
+        "mode": "write",
+        "type": "playControl",
+        "cmd": "setCurrentInputSource",
+        "data": 1
+    },
+    {
+        "mode": "write",
+        "type": "playControl",
+        "cmd": "setPlay",
+        "data": 1
+    },
+    {
+        "mode": "read",
+        "type": "playControl",
+        "cmd": "getPlayStaus"
+    },
+    {
+        "mode": "read",
+        "type": "audioControl",
+        "cmd": "getAudioChannelList"
+    },
+    {
+        "mode": "write",
+        "type": "audioControl",
+        "cmd": "setAudioChannelVolume",
+        "data": {
+            "id": 0,
+            "value": 100
+        }
+    },
+    {
+        "mode": "read",
+        "type": "audioControl",
+        "cmd": "getAudioChannelVolume",
+        "data": 1
+    },
+    {
+        "mode": "write",
+        "type": "audioControl",
+        "cmd": "setMute",
+        "data": {
+            "id": 1,
+            "value": 1
+        }
+    },
+    {
+        "mode": "read",
+        "type": "audioControl",
+        "cmd": "getMute",
+        "data": 1
+    },
+    {
+        "mode": "write",
+        "type": "audioControl",
+        "cmd": "getEQModeList"
+    },
+    {
+        "mode": "write",
+        "type": "audioControl",
+        "cmd": "setEQMode",
+        "data": 5
+    },
+    {
+        "mode": "read",
+        "type": "audioControl",
+        "cmd": "getEQMode"
+    },
+    {
+        "mode": "write",
+        "type": "audioControl",
+        "cmd": "getEQFilter",
+        "data": 10
+    },
+    {
+        "mode": "write",
+        "type": "audioControl",
+        "cmd": "setEQFilter",
+        "data": {
+            "eid": 10,
+            "value": {
+                "bid": 1,
+                "f": 16000,
+                "g": 20,
+                "q": 2,
+                "p": 180
+            }
+        }
+    },
+    {
+        "mode": "write",
+        "type": "settings",
+        "cmd": "setDeviceName",
+        "data": "Soundbar"
+    },
+    {
+        "mode": "write",
+        "type": "settings",
+        "cmd": "restoreFactary"
+    },
+    {
+        "mode": "write",
+        "type": "settings",
+        "cmd": "setWIFIPasswd",
+        "data": {
+            "ssid": "Midoo",
+            "password": "qwer1234"
+        }
+    },
+    {
+        "mode": "read",
+        "type": "settings",
+        "cmd": "getWIFIInformation"
+    },
+    {
+        "mode": "read",
+        "type": "settings",
+        "cmd": "getDeviceInformation"
+    },
+    {
+        "mode": "write",
+        "type": "deviceControl",
+        "cmd": "reboot",
+        "data": 5
+    },
+    {
+        "mode": "write",
+        "type": "deviceControl",
+        "cmd": "stanby",
+        "data": 2
+    },
+    {
+        "mode": "read",
+        "type": "settings",
+        "cmd": "getUserModeList"
+    },
+    {
+        "mode": "write",
+        "type": "settings",
+        "cmd": "setUserMode",
+        "data": 1
+    },
+    {
+        "mode": "read",
+        "type": "settings",
+        "cmd": "getUserMode"
+    },
+    {
+        "mode": "read",
+        "type": "shareAudio",
+        "cmd": "getMode"
+    },
+    {
+        "mode": "write",
+        "type": "shareAudio",
+        "cmd": "setMode",
+        "data": 1
+    },
+    {
+        "mode": "read",
+        "type": "shareAudio",
+        "cmd": "getMainModeCfg"
+    },
+    {
+        "mode": "write",
+        "type": "shareAudio",
+        "cmd": "setMainModeCfg",
+        "data": 1
+    },
+    {
+        "mode": "read",
+        "type": "shareAudio",
+        "cmd": "getSubModeCfg"
+    },
+    {
+        "mode": "write",
+        "type": "shareAudio",
+        "cmd": "changeSubModeGroup",
+        "data": "audio"
+    },
+    {
+        "mode": "write",
+        "type": "mail",
+        "cmd": "readmail",
+        "data": {
+            "id": "bill@leu.com",
+            "title": "successful registration",
+            "content": "welcome to leu world"
+        }
+    }
+]
