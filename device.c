@@ -133,12 +133,20 @@ esp_err_t gmc_device_standby(uint8_t mode)
 
 esp_err_t gmc_device_handle_reboot(uint8_t delay_seconds)
 {
+    // Validate delay to avoid immediate reboot before response
+    if (delay_seconds == 0) {
+        delay_seconds = 1;
+    }
+    
+    // First send success response
+    gmc_send_response(GMC_MODE_NOTIFY, GMC_TYPE_DEVICE_CONTROL, "reboot", 0, "success", NULL);
+    
+    // Then schedule reboot
     esp_err_t ret = gmc_device_reboot(delay_seconds);
     
-    if (ret == ESP_OK) {
-        gmc_send_response(GMC_MODE_NOTIFY, GMC_TYPE_DEVICE_CONTROL, "reboot", 0, "success", NULL);
-    } else {
-        gmc_send_response(GMC_MODE_NOTIFY, GMC_TYPE_DEVICE_CONTROL, "reboot", -1, "Failed to schedule reboot", NULL);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to schedule reboot");
+        // We already sent success, but logging error locally
     }
     
     return ret;
