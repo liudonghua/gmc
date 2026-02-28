@@ -678,9 +678,6 @@ esp_err_t gmc_bt_init(void)
     esp_err_t ret;
 
     ESP_LOGI(TAG, "Initializing NimBLE");
-    
-    // Suppress verbose NimBLE logs (GATT procedure initiated, etc.)
-    esp_log_level_set("NimBLE", ESP_LOG_WARN);
 
     // Create transmit mutex
     tx_mutex = xSemaphoreCreateMutex();

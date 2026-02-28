@@ -12,6 +12,14 @@
 
 static const char *TAG = "gmc_device";
 
+#ifndef GMC_DEEP_SLEEP_TIMER_SECONDS
+#define GMC_DEEP_SLEEP_TIMER_SECONDS 0
+#endif
+
+#ifndef GMC_LIGHT_SLEEP_TIMER_SECONDS
+#define GMC_LIGHT_SLEEP_TIMER_SECONDS 0
+#endif
+
 static TimerHandle_t reboot_timer = NULL;
 static uint8_t is_standby = 0;
 
@@ -86,14 +94,28 @@ esp_err_t gmc_device_standby(uint8_t mode)
     switch (mode) {
         case STANDBY_MODE_LIGHT:
             ESP_LOGI(TAG, "Entering light sleep mode");
-            
-            // Configure wake up sources (e.g., GPIO, timer)
-            // Example: Wake up after 10 seconds or on GPIO event
-            esp_sleep_enable_timer_wakeup(10 * 1000000);  // 10 seconds in microseconds
+
+            // Clear any previous wakeup source configuration first.
+            esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
+
+            // Light standby default: do NOT auto-wakeup by timer.
+            // Set GMC_LIGHT_SLEEP_TIMER_SECONDS > 0 at build time if timed wake is desired.
+#if GMC_LIGHT_SLEEP_TIMER_SECONDS > 0
+            esp_sleep_enable_timer_wakeup((uint64_t)GMC_LIGHT_SLEEP_TIMER_SECONDS * 1000000ULL);
+            ESP_LOGW(TAG, "Light sleep timer wakeup enabled: %u seconds", (unsigned)GMC_LIGHT_SLEEP_TIMER_SECONDS);
+#else
+            ESP_LOGW(TAG, "Light sleep timer wakeup disabled");
+#endif
             
             // Enter light sleep
             // Note: Light sleep can be woken by various interrupts
-            esp_light_sleep_start();
+            {
+                esp_err_t sleep_ret = esp_light_sleep_start();
+                if (sleep_ret != ESP_OK)
+                {
+                    ESP_LOGW(TAG, "Light sleep start rejected/failed: %s", esp_err_to_name(sleep_ret));
+                }
+            }
             
             ESP_LOGI(TAG, "Woke up from light sleep");
             is_standby = 0;
@@ -101,10 +123,18 @@ esp_err_t gmc_device_standby(uint8_t mode)
             
         case STANDBY_MODE_DEEP:
             ESP_LOGI(TAG, "Entering deep sleep mode");
+
+            // Clear any previous wakeup source configuration first.
+            esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
             
-            // Configure wake up sources
-            // Example: Wake up after 60 seconds
-            esp_sleep_enable_timer_wakeup(60 * 1000000);  // 60 seconds
+            // Deep standby default: do NOT auto-wakeup by timer.
+            // Set GMC_DEEP_SLEEP_TIMER_SECONDS > 0 at build time if timed wake is desired.
+#if GMC_DEEP_SLEEP_TIMER_SECONDS > 0
+            esp_sleep_enable_timer_wakeup((uint64_t)GMC_DEEP_SLEEP_TIMER_SECONDS * 1000000ULL);
+            ESP_LOGW(TAG, "Deep sleep timer wakeup enabled: %u seconds", (unsigned)GMC_DEEP_SLEEP_TIMER_SECONDS);
+#else
+            ESP_LOGW(TAG, "Deep sleep timer wakeup disabled (indefinite deep sleep until external wake/reset)");
+#endif
             
             // You can also configure GPIO wake up:
             // esp_sleep_enable_ext0_wakeup(GPIO_NUM_0, 0);  // Wake on GPIO0 LOW
